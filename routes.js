@@ -1,9 +1,13 @@
 const express = require('express')
 const routes = express.Router()
+const authMiddleware = require('./middlewares/auth')
+
+
 
 const animeController = require('./controllers/AnimeController')
 const authController = require('./controllers/AuthController')
 
+routes.use('/anime',authMiddleware)
 routes.post('/anime', animeController.create);
 routes.get('/anime', animeController.index);
 routes.get('/anime/:id', animeController.show);
