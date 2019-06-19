@@ -8,7 +8,11 @@ const authConfig = require('../config/auth')
 require('../models/User')
 const User = new mongoose.model('User')
 
-
+const generateToken = (params = {}) =>{
+    return jwt.sign(params,authConfig.secret,{
+        expiresIn: 864000,
+    })
+}
 
 module.exports = {
     async register(req,res){
@@ -22,7 +26,10 @@ module.exports = {
 
             //Essa linha é para não retornar a senha após ele ser cadastrado
             user.password = undefined
-            return res.send({user})
+            return res.send({
+                user,
+                token: generateToken({ id: user.id }),
+            })
 
         }catch (err){
             return res.status(400).send({error: `Registration failed: ${err}`})
@@ -42,11 +49,12 @@ module.exports = {
 
         user.password = undefined
 
-        const token = jwt.sign({ id: user.id },authConfig.secret,{
-            expiresIn: 864000,
-        })
+        const token = 
 
-        res.send({user, token})
+        res.send({
+            user, 
+            token: generateToken({ id: user.id }),
+        })
     }
 
 }
