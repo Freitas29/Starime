@@ -11,5 +11,6 @@ routes.put('/anime/:id', animeController.update);
 routes.delete('/anime/:id', animeController.delete);
 
 routes.post('/auth/register', authController.register);
+routes.post('/auth/login', authController.login);
 
 module.exports = routes
